@@ -1,5 +1,5 @@
 /* ================================================================
-   POTATO METER 4.0
+   Potatomeeter 4.0
    LOCAL IMAGE ANALYSIS + RU / EN
    ================================================================ */
 
@@ -66,7 +66,7 @@ const translations = {
         infoPotatoText:
             "Десятилетия совершенно вымышленного исследования картошки.",
 
-        footerText: "Potato Meter",
+        footerText: "Potatomeeter",
         footerSubtext:
             "научная сомнительность, эмоциональная точность",
 
@@ -91,7 +91,7 @@ const translations = {
             "Не удалось открыть это изображение.",
 
         shareTitle:
-            "Мой Potato Meter результат",
+            "Мой Potatomeeter результат",
         shareText:
             "Моя фотография получила {score}% картофельности 🥔",
 
@@ -158,7 +158,7 @@ const translations = {
         infoPotatoText:
             "Decades of completely imaginary potato research.",
 
-        footerText: "Potato Meter",
+        footerText: "Potatomeeter",
         footerSubtext:
             "scientifically questionable, emotionally accurate",
 
@@ -183,7 +183,7 @@ const translations = {
             "Could not open this image.",
 
         shareTitle:
-            "My Potato Meter result",
+            "My Potatomeeter result",
         shareText:
             "My photo scored {score}% potato 🥔",
 
@@ -719,7 +719,7 @@ async function runScan() {
         );
     } catch (error) {
         console.error(
-            "Potato Meter analysis error:",
+            "Potatomeeter analysis error:",
             error
         );
 
@@ -1586,9 +1586,6 @@ async function shareResult() {
         return;
     }
 
-    const score =
-        currentAnalysis.score;
-
     const shareTitle =
         t("shareTitle");
 
@@ -1596,111 +1593,129 @@ async function shareResult() {
         t("shareText")
             .replace(
                 "{score}",
-                score
+                currentAnalysis.score
             );
 
     /*
-       Главное изменение:
-
-       Теперь Share пытается передать не только текст,
-       а настоящий PNG-файл с карточкой результата.
-
-       Web Share API требует проверки canShare()
-       перед передачей files.
+       Если карточка ещё не создана —
+       создаём её прямо сейчас.
     */
-    if (
-        currentShareFile &&
-        navigator.share &&
-        navigator.canShare
-    ) {
-        const shareData = {
-            title: shareTitle,
-            text: shareText,
-            files: [
-                currentShareFile
-            ]
-        };
-
+    if (!currentShareFile) {
         try {
-            if (
-                navigator.canShare({
-                    files: [
-                        currentShareFile
-                    ]
-                })
-            ) {
-                await navigator.share(
-                    shareData
+            currentShareFile =
+                createShareCardFile(
+                    currentAnalysis
                 );
-
-                return;
-            }
         } catch (error) {
-            if (
-                error?.name ===
-                "AbortError"
-            ) {
-                return;
-            }
-
-            console.warn(
-                "Image share failed:",
+            console.error(
+                "Share card creation error:",
                 error
             );
+
+            currentShareFile = null;
         }
     }
 
     /*
-       Запасной вариант.
-
-       Если устройство/браузер не умеет
-       передавать изображения через Web Share,
-       пробуем поделиться хотя бы текстом.
+       Нужна поддержка Web Share API.
     */
-    if (navigator.share) {
-        try {
-            await navigator.share({
-                title: shareTitle,
-                text: shareText
-            });
+    if (
+        !navigator.share ||
+        !navigator.canShare
+    ) {
+        showShareError();
 
-            return;
-        } catch (error) {
-            if (
-                error?.name ===
-                "AbortError"
-            ) {
-                return;
-            }
-        }
+        return;
     }
 
     /*
-       Последний fallback — копирование текста.
+       Без файла НЕ вызываем navigator.share().
+       Иначе телефон снова получит только текст.
+    */
+    if (!currentShareFile) {
+        showShareError();
+
+        return;
+    }
+
+    /*
+       Проверяем именно возможность
+       отправки файлов.
+    */
+    let canShareFile = false;
+
+    try {
+        canShareFile =
+            navigator.canShare({
+                files: [
+                    currentShareFile
+                ]
+            });
+    } catch (error) {
+        console.error(
+            "File sharing check failed:",
+            error
+        );
+
+        canShareFile = false;
+    }
+
+    /*
+       Браузер не умеет отправлять изображения.
+       Не откатываемся к тексту.
+    */
+    if (!canShareFile) {
+        showShareError();
+
+        return;
+    }
+
+    /*
+       Отправляем ТОЛЬКО изображение.
+
+       text специально НЕ передаём.
+       Это важно: некоторые системы иначе
+       показывают текст вместо изображения.
     */
     try {
-        await navigator.clipboard.writeText(
-            shareText
+        await navigator.share({
+            files: [
+                currentShareFile
+            ],
+            title: shareTitle
+        });
+
+        console.log(
+            "Potatomeeter card shared successfully."
+        );
+    } catch (error) {
+        if (
+            error?.name ===
+            "AbortError"
+        ) {
+            return;
+        }
+
+        console.error(
+            "Image sharing failed:",
+            error
         );
 
-        const originalText =
-            t("share");
-
-        shareButton.textContent =
-            currentLanguage === "ru"
-                ? "Скопировано!"
-                : "Copied!";
-
-        setTimeout(() => {
-            shareButton.textContent =
-                originalText;
-        }, 1600);
-    } catch {
-        window.prompt(
-            shareTitle,
-            shareText
-        );
+        showShareError();
     }
+}
+
+/* ================================================================
+   SHARE ERROR
+   ================================================================ */
+
+function showShareError() {
+    const message =
+        currentLanguage === "ru"
+            ? "Этот браузер не поддерживает отправку изображений через кнопку «Поделиться». Попробуйте открыть Potatomeeter в Chrome или Safari."
+            : "This browser does not support sharing images from the website. Try opening Potatomeeter in Chrome or Safari.";
+
+    alert(message);
 }
 
 
@@ -1712,7 +1727,7 @@ async function shareResult() {
    Создаёт самостоятельную PNG-карточку:
 
    ┌──────────────────────────────────┐
-   │          POTATO METER            │
+   │          Potatomeeter            │
    │                                  │
    │          [ ФОТО ]                │
    │                                  │
@@ -1886,7 +1901,7 @@ function createShareCardFile(
         "900 31px Inter, Arial, sans-serif";
 
     context.fillText(
-        "Potato Meter",
+        "Potatomeeter",
         185,
         122
     );
