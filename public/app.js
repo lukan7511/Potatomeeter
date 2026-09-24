@@ -1582,125 +1582,57 @@ function getVerdict(score) {
    ================================================================ */
 
 async function shareResult() {
-    if (!currentAnalysis) {
-        return;
-    }
+    if (!currentAnalysis) return;
 
-    const shareTitle =
-        t("shareTitle");
+    const score = currentAnalysis.score;
+    const shareTitle = t("shareTitle");
 
-    const shareText =
-        t("shareText")
-            .replace(
-                "{score}",
-                currentAnalysis.score
-            );
+    const siteUrl = window.location.origin + window.location.pathname;
 
-    /*
-       Если карточка ещё не создана —
-       создаём её прямо сейчас.
-    */
+    const shareText = currentLanguage === "ru"
+        ? `🥔 Potato Meter: ${score}/100\nПроверь, насколько это картошка!\n\n${siteUrl}`
+        : `🥔 Potato Meter: ${score}/100\nCheck how potato it is!\n\n${siteUrl}`;
+
     if (!currentShareFile) {
         try {
-            currentShareFile =
-                createShareCardFile(
-                    currentAnalysis
-                );
+            currentShareFile = createShareCardFile(currentAnalysis, previewImage);
         } catch (error) {
-            console.error(
-                "Share card creation error:",
-                error
-            );
-
+            console.error("Share card creation failed:", error);
             currentShareFile = null;
         }
     }
 
-    /*
-       Нужна поддержка Web Share API.
-    */
-    if (
-        !navigator.share ||
-        !navigator.canShare
-    ) {
+    if (!navigator.share || !navigator.canShare || !currentShareFile) {
         showShareError();
-
         return;
     }
 
-    /*
-       Без файла НЕ вызываем navigator.share().
-       Иначе телефон снова получит только текст.
-    */
-    if (!currentShareFile) {
-        showShareError();
-
-        return;
-    }
-
-    /*
-       Проверяем именно возможность
-       отправки файлов.
-    */
     let canShareFile = false;
 
     try {
-        canShareFile =
-            navigator.canShare({
-                files: [
-                    currentShareFile
-                ]
-            });
-    } catch (error) {
-        console.error(
-            "File sharing check failed:",
-            error
-        );
-
+        canShareFile = navigator.canShare({
+            files: [currentShareFile]
+        });
+    } catch {
         canShareFile = false;
     }
 
-    /*
-       Браузер не умеет отправлять изображения.
-       Не откатываемся к тексту.
-    */
     if (!canShareFile) {
         showShareError();
-
         return;
     }
 
-    /*
-       Отправляем ТОЛЬКО изображение.
-
-       text специально НЕ передаём.
-       Это важно: некоторые системы иначе
-       показывают текст вместо изображения.
-    */
     try {
         await navigator.share({
-            files: [
-                currentShareFile
-            ],
-            title: shareTitle
+            title: shareTitle,
+            text: shareText,
+            url: siteUrl,
+            files: [currentShareFile]
         });
-
-        console.log(
-            "Potatomeeter card shared successfully."
-        );
     } catch (error) {
-        if (
-            error?.name ===
-            "AbortError"
-        ) {
-            return;
-        }
+        if (error?.name === "AbortError") return;
 
-        console.error(
-            "Image sharing failed:",
-            error
-        );
-
+        console.error("Image sharing failed:", error);
         showShareError();
     }
 }
