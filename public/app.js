@@ -209,6 +209,8 @@ let currentFile = null;
 let currentObjectUrl = null;
 let currentAnalysis = null;
 
+let currentShareFile = null;
+
 
 /* ================================================================
    DOM
@@ -398,6 +400,16 @@ function setLanguage(language) {
     if (currentAnalysis) {
         verdict.textContent =
             getVerdict(currentAnalysis.score);
+
+        /*
+           Пересоздаём карточку Share на новом языке.
+           Это гарантирует, что после переключения RU/EN
+           отправится актуальная версия карточки.
+        */
+        currentShareFile =
+            createShareCardFile(
+                currentAnalysis
+            );
     }
 }
 
@@ -577,6 +589,7 @@ function handleFile(file) {
 
     currentFile = file;
     currentAnalysis = null;
+    currentShareFile = null;
 
     currentObjectUrl =
         URL.createObjectURL(file);
@@ -1496,6 +1509,24 @@ function renderResult(
 
     scanButton.disabled = false;
 
+    /*
+       Создаём PNG-карточку сразу после результата.
+       Поэтому к моменту нажатия Share файл уже готов.
+    */
+    try {
+        currentShareFile =
+            createShareCardFile(
+                analysis
+            );
+    } catch (error) {
+        console.error(
+            "Share card creation error:",
+            error
+        );
+
+        currentShareFile = null;
+    }
+
     requestAnimationFrame(() => {
         resultSection.scrollIntoView({
             behavior: "smooth",
@@ -1568,9 +1599,65 @@ async function shareResult() {
                 score
             );
 
+    /*
+       Главное изменение:
+
+       Теперь Share пытается передать не только текст,
+       а настоящий PNG-файл с карточкой результата.
+
+       Web Share API требует проверки canShare()
+       перед передачей files.
+    */
     if (
-        navigator.share
+        currentShareFile &&
+        navigator.share &&
+        navigator.canShare
     ) {
+        const shareData = {
+            title: shareTitle,
+            text: shareText,
+            files: [
+                currentShareFile
+            ]
+        };
+
+        try {
+            if (
+                navigator.canShare({
+                    files: [
+                        currentShareFile
+                    ]
+                })
+            ) {
+                await navigator.share(
+                    shareData
+                );
+
+                return;
+            }
+        } catch (error) {
+            if (
+                error?.name ===
+                "AbortError"
+            ) {
+                return;
+            }
+
+            console.warn(
+                "Image share failed:",
+                error
+            );
+        }
+    }
+
+    /*
+       Запасной вариант.
+
+       Если устройство/браузер не умеет
+       передавать изображения через Web Share,
+       пробуем поделиться хотя бы текстом.
+    */
+    if (navigator.share) {
         try {
             await navigator.share({
                 title: shareTitle,
@@ -1588,10 +1675,16 @@ async function shareResult() {
         }
     }
 
+    /*
+       Последний fallback — копирование текста.
+    */
     try {
         await navigator.clipboard.writeText(
             shareText
         );
+
+        const originalText =
+            t("share");
 
         shareButton.textContent =
             currentLanguage === "ru"
@@ -1600,13 +1693,778 @@ async function shareResult() {
 
         setTimeout(() => {
             shareButton.textContent =
-                t("share");
+                originalText;
         }, 1600);
     } catch {
         window.prompt(
             shareTitle,
             shareText
         );
+    }
+}
+
+
+/* ================================================================
+   SHARE CARD
+   ================================================================ */
+
+/*
+   Создаёт самостоятельную PNG-карточку:
+
+   ┌──────────────────────────────────┐
+   │          POTATO METER            │
+   │                                  │
+   │          [ ФОТО ]                │
+   │                                  │
+   │          POTATO SCORE             │
+   │             87%                  │
+   │      Very potato-like...         │
+   │                                  │
+   │  Shape     Color     Texture     │
+   │   82%       91%        64%       │
+   └──────────────────────────────────┘
+
+   Карточка не зависит от DOM/CSS сайта.
+   Это настоящий PNG, который можно отправить
+   в Telegram / WhatsApp / Messages и т.д.
+*/
+
+function createShareCardFile(
+    analysis
+) {
+    if (
+        !analysis ||
+        !resultPhoto
+    ) {
+        return null;
+    }
+
+    if (
+        !resultPhoto.complete ||
+        !resultPhoto.naturalWidth ||
+        !resultPhoto.naturalHeight
+    ) {
+        return null;
+    }
+
+    const canvas =
+        document.createElement(
+            "canvas"
+        );
+
+    const width = 1200;
+    const height = 1500;
+
+    canvas.width = width;
+    canvas.height = height;
+
+    const context =
+        canvas.getContext(
+            "2d"
+        );
+
+    if (!context) {
+        return null;
+    }
+
+    /*
+       Background
+    */
+
+    context.fillStyle =
+        "#f5f1e8";
+
+    context.fillRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+    /*
+       Subtle decorative circles
+    */
+
+    const yellowGradient =
+        context.createRadialGradient(
+            130,
+            130,
+            20,
+            130,
+            130,
+            420
+        );
+
+    yellowGradient.addColorStop(
+        0,
+        "rgba(243, 201, 75, 0.22)"
+    );
+
+    yellowGradient.addColorStop(
+        1,
+        "rgba(243, 201, 75, 0)"
+    );
+
+    context.fillStyle =
+        yellowGradient;
+
+    context.fillRect(
+        0,
+        0,
+        520,
+        520
+    );
+
+    /*
+       Main card
+    */
+
+    roundRect(
+        context,
+        50,
+        50,
+        width - 100,
+        height - 100,
+        42
+    );
+
+    context.fillStyle =
+        "#fffdf8";
+
+    context.fill();
+
+    context.strokeStyle =
+        "#ddd7ca";
+
+    context.lineWidth = 2;
+
+    context.stroke();
+
+    /*
+       Header
+    */
+
+    context.fillStyle =
+        "#f3c94b";
+
+    roundRect(
+        context,
+        90,
+        90,
+        72,
+        72,
+        20
+    );
+
+    context.fill();
+
+    context.font =
+        '42px "Segoe UI Emoji", "Apple Color Emoji", sans-serif';
+
+    context.textAlign =
+        "center";
+
+    context.textBaseline =
+        "middle";
+
+    context.fillText(
+        "🥔",
+        126,
+        126
+    );
+
+    context.textAlign =
+        "left";
+
+    context.textBaseline =
+        "alphabetic";
+
+    context.fillStyle =
+        "#171713";
+
+    context.font =
+        "900 31px Inter, Arial, sans-serif";
+
+    context.fillText(
+        "Potato Meter",
+        185,
+        122
+    );
+
+    context.fillStyle =
+        "#77736a";
+
+    context.font =
+        "700 15px Inter, Arial, sans-serif";
+
+    context.fillText(
+        currentLanguage === "ru"
+            ? "ЛОКАЛЬНЫЙ АНАЛИЗ"
+            : "LOCAL ANALYSIS",
+        185,
+        148
+    );
+
+    /*
+       Photo area
+    */
+
+    const photoX = 90;
+    const photoY = 205;
+    const photoWidth = 1020;
+    const photoHeight = 650;
+
+    context.save();
+
+    roundRect(
+        context,
+        photoX,
+        photoY,
+        photoWidth,
+        photoHeight,
+        28
+    );
+
+    context.clip();
+
+    /*
+       Checker background
+    */
+
+    context.fillStyle =
+        "#faf8f3";
+
+    context.fillRect(
+        photoX,
+        photoY,
+        photoWidth,
+        photoHeight
+    );
+
+    const checkerSize = 32;
+
+    for (
+        let y = photoY;
+        y < photoY + photoHeight;
+        y += checkerSize
+    ) {
+        for (
+            let x = photoX;
+            x < photoX + photoWidth;
+            x += checkerSize
+        ) {
+            const cellX =
+                Math.floor(
+                    (x - photoX) /
+                    checkerSize
+                );
+
+            const cellY =
+                Math.floor(
+                    (y - photoY) /
+                    checkerSize
+                );
+
+            if (
+                (cellX + cellY) %
+                2 ===
+                0
+            ) {
+                context.fillStyle =
+                    "#efebe2";
+
+                context.fillRect(
+                    x,
+                    y,
+                    checkerSize,
+                    checkerSize
+                );
+            }
+        }
+    }
+
+    /*
+       Preserve original image aspect ratio.
+    */
+
+    const imageWidth =
+        resultPhoto.naturalWidth;
+
+    const imageHeight =
+        resultPhoto.naturalHeight;
+
+    const imageRatio =
+        imageWidth /
+        imageHeight;
+
+    const frameRatio =
+        photoWidth /
+        photoHeight;
+
+    let drawWidth;
+    let drawHeight;
+    let drawX;
+    let drawY;
+
+    if (
+        imageRatio >
+        frameRatio
+    ) {
+        drawWidth =
+            photoWidth;
+
+        drawHeight =
+            photoWidth /
+            imageRatio;
+
+        drawX =
+            photoX;
+
+        drawY =
+            photoY +
+            (
+                photoHeight -
+                drawHeight
+            ) /
+            2;
+    } else {
+        drawHeight =
+            photoHeight;
+
+        drawWidth =
+            photoHeight *
+            imageRatio;
+
+        drawX =
+            photoX +
+            (
+                photoWidth -
+                drawWidth
+            ) /
+            2;
+
+        drawY =
+            photoY;
+    }
+
+    context.drawImage(
+        resultPhoto,
+        drawX,
+        drawY,
+        drawWidth,
+        drawHeight
+    );
+
+    context.restore();
+
+    /*
+       Score label
+    */
+
+    context.textAlign =
+        "center";
+
+    context.fillStyle =
+        "#77736a";
+
+    context.font =
+        "900 16px Inter, Arial, sans-serif";
+
+    context.fillText(
+        currentLanguage === "ru"
+            ? "КАРТОФЕЛЬНЫЙ БАЛЛ"
+            : "POTATO SCORE",
+        width / 2,
+        930
+    );
+
+    /*
+       Score
+    */
+
+    context.fillStyle =
+        "#667a3d";
+
+    context.font =
+        "950 145px Inter, Arial, sans-serif";
+
+    context.fillText(
+        `${analysis.score}%`,
+        width / 2,
+        1070
+    );
+
+    /*
+       Verdict
+    */
+
+    context.fillStyle =
+        "#171713";
+
+    context.font =
+        "900 27px Inter, Arial, sans-serif";
+
+    const verdictText =
+        getVerdict(
+            analysis.score
+        );
+
+    drawWrappedText(
+        context,
+        verdictText,
+        width / 2,
+        1135,
+        900,
+        34
+    );
+
+    /*
+       Details
+    */
+
+    const detailsY = 1240;
+
+    drawShareMetric(
+        context,
+        130,
+        detailsY,
+        t("shape"),
+        analysis.shape
+    );
+
+    drawShareMetric(
+        context,
+        440,
+        detailsY,
+        t("color"),
+        analysis.color
+    );
+
+    drawShareMetric(
+        context,
+        750,
+        detailsY,
+        t("texture"),
+        analysis.texture
+    );
+
+    /*
+       Footer
+    */
+
+    context.fillStyle =
+        "#aaa59a";
+
+    context.font =
+        "700 14px Inter, Arial, sans-serif";
+
+    context.textAlign =
+        "center";
+
+    context.fillText(
+        "potato-meter",
+        width / 2,
+        1410
+    );
+
+    /*
+       Convert canvas to PNG synchronously.
+
+       Это сделано намеренно: File создаётся
+       ещё до нажатия Share, поэтому само
+       navigator.share() вызывается непосредственно
+       из обработчика кнопки без дополнительного
+       ожидания генерации изображения.
+    */
+
+    const dataUrl =
+        canvas.toDataURL(
+            "image/png"
+        );
+
+    const blob =
+        dataUrlToBlob(
+            dataUrl
+        );
+
+    if (!blob) {
+        return null;
+    }
+
+    return new File(
+        [
+            blob
+        ],
+        `potato-meter-${analysis.score}.png`,
+        {
+            type: "image/png",
+            lastModified:
+                Date.now()
+        }
+    );
+}
+
+
+/* ================================================================
+   SHARE CARD DRAWING HELPERS
+   ================================================================ */
+
+function drawShareMetric(
+    context,
+    x,
+    y,
+    label,
+    value
+) {
+    context.textAlign =
+        "left";
+
+    context.fillStyle =
+        "#77736a";
+
+    context.font =
+        "800 15px Inter, Arial, sans-serif";
+
+    context.fillText(
+        label,
+        x,
+        y
+    );
+
+    context.textAlign =
+        "right";
+
+    context.fillStyle =
+        "#171713";
+
+    context.font =
+        "900 16px Inter, Arial, sans-serif";
+
+    context.fillText(
+        `${value}%`,
+        x + 220,
+        y
+    );
+
+    /*
+       Bar background
+    */
+
+    context.fillStyle =
+        "#e6e1d7";
+
+    roundRect(
+        context,
+        x,
+        y + 16,
+        220,
+        10,
+        5
+    );
+
+    context.fill();
+
+    /*
+       Bar value
+    */
+
+    context.fillStyle =
+        "#667a3d";
+
+    roundRect(
+        context,
+        x,
+        y + 16,
+        Math.max(
+            2,
+            220 * (
+                value / 100
+            )
+        ),
+        10,
+        5
+    );
+
+    context.fill();
+}
+
+
+function roundRect(
+    context,
+    x,
+    y,
+    width,
+    height,
+    radius
+) {
+    const safeRadius =
+        Math.min(
+            radius,
+            width / 2,
+            height / 2
+        );
+
+    context.beginPath();
+
+    context.moveTo(
+        x + safeRadius,
+        y
+    );
+
+    context.arcTo(
+        x + width,
+        y,
+        x + width,
+        y + height,
+        safeRadius
+    );
+
+    context.arcTo(
+        x + width,
+        y + height,
+        x,
+        y + height,
+        safeRadius
+    );
+
+    context.arcTo(
+        x,
+        y + height,
+        x,
+        y,
+        safeRadius
+    );
+
+    context.arcTo(
+        x,
+        y,
+        x + width,
+        y,
+        safeRadius
+    );
+
+    context.closePath();
+}
+
+
+function drawWrappedText(
+    context,
+    text,
+    centerX,
+    startY,
+    maxWidth,
+    lineHeight
+) {
+    const words =
+        String(text)
+            .split(/\s+/);
+
+    const lines = [];
+    let currentLine = "";
+
+    for (const word of words) {
+        const testLine =
+            currentLine
+                ? `${currentLine} ${word}`
+                : word;
+
+        const metrics =
+            context.measureText(
+                testLine
+            );
+
+        if (
+            metrics.width >
+                maxWidth &&
+            currentLine
+        ) {
+            lines.push(
+                currentLine
+            );
+
+            currentLine =
+                word;
+        } else {
+            currentLine =
+                testLine;
+        }
+    }
+
+    if (currentLine) {
+        lines.push(
+            currentLine
+        );
+    }
+
+    context.textAlign =
+        "center";
+
+    lines.forEach(
+        (line, index) => {
+            context.fillText(
+                line,
+                centerX,
+                startY +
+                    index *
+                    lineHeight
+            );
+        }
+    );
+}
+
+
+function dataUrlToBlob(
+    dataUrl
+) {
+    try {
+        const parts =
+            dataUrl.split(",");
+
+        if (
+            parts.length !== 2
+        ) {
+            return null;
+        }
+
+        const mimeMatch =
+            parts[0].match(
+                /data:([^;]+);base64/
+            );
+
+        if (!mimeMatch) {
+            return null;
+        }
+
+        const mime =
+            mimeMatch[1];
+
+        const binary =
+            atob(parts[1]);
+
+        const bytes =
+            new Uint8Array(
+                binary.length
+            );
+
+        for (
+            let i = 0;
+            i < binary.length;
+            i++
+        ) {
+            bytes[i] =
+                binary.charCodeAt(i);
+        }
+
+        return new Blob(
+            [
+                bytes
+            ],
+            {
+                type: mime
+            }
+        );
+    } catch {
+        return null;
     }
 }
 
@@ -1743,6 +2601,7 @@ function resetApp(
 
     currentFile = null;
     currentAnalysis = null;
+    currentShareFile = null;
 
     if (fileInput) {
         fileInput.value = "";
