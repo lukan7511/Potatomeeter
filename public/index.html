@@ -1,413 +1,367 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Potatomeeter — узнайте, насколько ваша фотография похожа на картошку.">
-  <title>Potatomeeter 🥔</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <meta name="description" content="Potato Meter — find out how potato your photo is.">
+
+  <title>Potato Meter 🥔</title>
 
   <link rel="stylesheet" href="/style.css">
 </head>
 
 <body>
+  <div class="page-shell">
 
-  <div class="page">
-
+    <!-- Header -->
     <header class="site-header">
-
       <div class="brand">
-        <div class="brand-potato">🥔</div>
+        <div class="brand-icon">🥔</div>
 
-        <div class="brand-text">
-          <div class="brand-name">Potatomeeter</div>
-
-          <div class="brand-tagline" data-i18n="brandTagline">
-            potato detection laboratory
-          </div>
+        <div class="brand-copy">
+          <h1>Potato Meter</h1>
+          <p data-i18n="subtitle">
+            How potato is it?
+          </p>
         </div>
       </div>
 
-      <div class="header-right">
+      <div class="language-switcher" aria-label="Language">
+        <button type="button" class="language-button active" data-language="en" aria-label="English">
+          EN
+        </button>
 
-        <div class="language-switcher" aria-label="Language">
-          <button type="button" class="language-button active" data-language="ru" aria-label="Русский">
-            RU
-          </button>
-
-          <span class="language-divider">/</span>
-
-          <button type="button" class="language-button" data-language="en" aria-label="English">
-            EN
-          </button>
-        </div>
-
-        <div class="header-status">
-          <span class="status-dot"></span>
-
-          <span data-i18n="systemOnline">
-            SYSTEM ONLINE
-          </span>
-        </div>
-
+        <button type="button" class="language-button" data-language="ru" aria-label="Русский">
+          RU
+        </button>
       </div>
-
     </header>
 
 
-    <main class="main">
+    <!-- Main -->
+    <main class="main-content">
 
-      <!-- HERO -->
-
-      <section class="hero">
-
-        <div class="hero-eyebrow" data-i18n="heroEyebrow">
-          POTATO ANALYSIS ENGINE
+      <!-- Hero -->
+      <section class="hero-section">
+        <div class="hero-badge" data-i18n="badge">
+          Potato detection technology
         </div>
 
-        <h1>
-          <span data-i18n="heroTitleLine1">How potato</span>
-          <br>
-          <span data-i18n="heroTitleLine2">is your photo?</span>
-        </h1>
+        <h2 data-i18n="title">
+          How potato is your photo?
+        </h2>
 
-        <p class="hero-description" data-i18n="heroDescription">
-          Upload a photo and let our highly scientific potato
-          detection system determine just how potato-like it is.
+        <p class="hero-description" data-i18n="description">
+          Upload a photo and let the Potato Meter decide.
         </p>
-
       </section>
 
 
-      <!-- UPLOAD -->
+      <!-- Upload card -->
+      <section class="upload-section">
+        <div class="upload-card">
 
-      <section class="upload-section" id="uploadSection">
+          <div class="upload-card-header">
+            <div>
+              <h3 data-i18n="uploadTitle">
+                Upload a photo
+              </h3>
 
-        <div class="dropzone" id="dropzone">
+              <p data-i18n="uploadDescription">
+                Any photo will do. Potato or not — let's find out.
+              </p>
+            </div>
 
-          <div class="dropzone-icon">
-            🥔
+            <div class="upload-icon">
+              📸
+            </div>
           </div>
 
-          <h2 data-i18n="uploadTitle">
-            Drop your photo here
-          </h2>
 
-          <p data-i18n="uploadDescription">
-            Or choose an image from your device.
-          </p>
+          <!-- Native input -->
+          <input type="file" id="fileInput" accept="image/*" hidden>
 
-          <input id="fileInput" type="file" accept="image/*">
 
-          <label for="fileInput" id="browseButton" class="browse-button" data-i18n="choosePhoto">
-            Choose a photo
+          <!-- Upload / drop zone -->
+          <label for="fileInput" class="upload-zone" id="uploadButton">
+            <div class="upload-zone-icon">
+              🥔
+            </div>
+
+            <div class="upload-zone-title" data-i18n="choosePhoto">
+              Choose a photo
+            </div>
+
+            <div class="upload-zone-description" data-i18n="dragDrop">
+              or drag & drop it here
+            </div>
+
+            <div class="upload-zone-hint" data-i18n="fileHint">
+              JPG, PNG, WEBP · up to 15 MB
+            </div>
           </label>
 
-          <div class="upload-hint" data-i18n="uploadHint">
-            JPG · PNG · WEBP · up to 15 MB
-          </div>
 
-        </div>
-
-      </section>
-
-
-      <!-- PREVIEW -->
-
-      <section class="preview-section hidden" id="previewSection">
-
-        <div class="section-heading">
-
-          <div>
-            <div class="section-kicker" data-i18n="previewKicker">
-              PHOTO READY
-            </div>
-
-            <h2 data-i18n="previewTitle">
-              Your photo
-            </h2>
-          </div>
-
-          <button type="button" class="remove-button" id="removeButton" data-i18n="remove">
-            Remove
-          </button>
-
-        </div>
-
-
-        <div class="preview-card">
-
-          <div class="preview-image-wrap">
-            <img id="previewImage" class="preview-image" alt="Preview">
-          </div>
-
-          <div class="preview-info">
-
-            <div class="file-info">
-
-              <span class="file-info-label" data-i18n="fileLabel">
-                FILE
+          <!-- Preview -->
+          <div class="preview-wrapper" id="previewWrapper" hidden>
+            <div class="preview-header">
+              <span data-i18n="previewTitle">
+                Your photo
               </span>
 
-              <strong id="fileName">
-                —
-              </strong>
-
+              <button type="button" class="text-button" id="removeButton" data-i18n="remove">
+                Remove
+              </button>
             </div>
 
-            <div class="file-info">
-
-              <span class="file-info-label" data-i18n="sizeLabel">
-                SIZE
-              </span>
-
-              <strong id="fileSize">
-                —
-              </strong>
-
+            <div class="preview-frame">
+              <img id="previewImage" class="preview-image" alt="Selected photo">
             </div>
 
+            <button type="button" class="primary-button scan-button" id="scanButton">
+              <span class="button-icon">🥔</span>
+              <span data-i18n="scan">Scan</span>
+            </button>
+          </div>
+
+
+          <!-- Loading -->
+          <div class="loading-state" id="loadingState" hidden>
+            <div class="loading-potato">
+              🥔
+            </div>
+
+            <h3 data-i18n="scanning">
+              Scanning potato levels...
+            </h3>
+
+            <p data-i18n="scanningDescription">
+              Inspecting shape, color and texture.
+            </p>
+
+            <div class="progress-track">
+              <div class="progress-bar" id="loadingProgress"></div>
+            </div>
+
+            <div class="loading-percent" id="loadingPercent">
+              0%
+            </div>
           </div>
 
         </div>
-
-
-        <button type="button" class="scan-button" id="scanButton">
-
-          <span class="scan-button-icon">
-            🔬
-          </span>
-
-          <span data-i18n="scanButton">
-            Scan this photo
-          </span>
-
-          <span class="scan-button-arrow">
-            →
-          </span>
-
-        </button>
-
       </section>
 
 
-      <!-- LOADING -->
-
-      <section class="loading-section hidden" id="loadingSection">
-
-        <div class="loading-card">
-
-          <div class="loading-potato">
-            🥔
-          </div>
-
-          <div class="loading-content">
-
-            <div class="loading-title" data-i18n="loadingTitle">
-              Inspecting potato potential…
-            </div>
-
-            <div class="loading-text" id="loadingText" data-i18n="loadingText">
-              Measuring shape, color and texture.
-            </div>
-
-            <div class="loading-progress">
-              <div class="loading-progress-bar" id="loadingProgressBar"></div>
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      <!-- RESULT -->
-
-      <section class="result-section hidden" id="resultSection">
-
-        <div class="section-heading">
-
-          <div>
-            <div class="section-kicker" data-i18n="resultKicker">
-              ANALYSIS COMPLETE
-            </div>
-
-            <h2 data-i18n="resultTitle">
-              Potato verdict
-            </h2>
-          </div>
-
-          <div class="result-badge" data-i18n="resultBadge">
-            LOCAL ANALYSIS
-          </div>
-
-        </div>
-
-
+      <!-- Result -->
+      <section class="result-section" id="resultSection" hidden>
         <div class="result-card">
 
+          <div class="result-card-header">
+            <div>
+              <div class="result-label" data-i18n="resultLabel">
+                Potato Meter result
+              </div>
+
+              <h2 data-i18n="resultTitle">
+                Your potato score
+              </h2>
+            </div>
+
+            <div class="result-potato">
+              🥔
+            </div>
+          </div>
+
+
+          <!-- Result photo -->
           <div class="result-photo-frame">
             <img id="resultPhoto" class="result-photo" alt="Analyzed photo">
           </div>
 
 
-          <div class="result-main">
-
-            <div class="score-label" data-i18n="scoreLabel">
-              POTATO SCORE
+          <!-- Score -->
+          <div class="score-block">
+            <div class="score-number" id="scoreValue">
+              0
             </div>
 
-            <div class="score-value" id="scoreValue">
-              0%
+            <div class="score-max">
+              /100
             </div>
+          </div>
 
-            <div class="verdict" id="verdict">
-              —
-            </div>
-
+          <div class="score-verdict" id="scoreVerdict">
+            —
           </div>
 
 
-          <div class="result-details">
+          <!-- Metrics -->
+          <div class="metrics-grid">
 
-            <div class="result-detail">
-
-              <div class="detail-top">
-                <span data-i18n="shape">
+            <div class="metric-card">
+              <div class="metric-top">
+                <span class="metric-name" data-i18n="shape">
                   Shape
                 </span>
 
-                <strong id="shapeScore">
-                  0%
-                </strong>
+                <span class="metric-value" id="shapeValue">
+                  0
+                </span>
               </div>
 
-              <div class="detail-bar">
-                <div class="detail-bar-fill" id="shapeBar"></div>
+              <div class="metric-track">
+                <div class="metric-progress" id="shapeProgress"></div>
               </div>
-
             </div>
 
 
-            <div class="result-detail">
-
-              <div class="detail-top">
-                <span data-i18n="color">
+            <div class="metric-card">
+              <div class="metric-top">
+                <span class="metric-name" data-i18n="color">
                   Color
                 </span>
 
-                <strong id="colorScore">
-                  0%
-                </strong>
+                <span class="metric-value" id="colorValue">
+                  0
+                </span>
               </div>
 
-              <div class="detail-bar">
-                <div class="detail-bar-fill" id="colorBar"></div>
+              <div class="metric-track">
+                <div class="metric-progress" id="colorProgress"></div>
               </div>
-
             </div>
 
 
-            <div class="result-detail">
-
-              <div class="detail-top">
-                <span data-i18n="texture">
+            <div class="metric-card">
+              <div class="metric-top">
+                <span class="metric-name" data-i18n="texture">
                   Texture
                 </span>
 
-                <strong id="textureScore">
-                  0%
-                </strong>
+                <span class="metric-value" id="textureValue">
+                  0
+                </span>
               </div>
 
-              <div class="detail-bar">
-                <div class="detail-bar-fill" id="textureBar"></div>
+              <div class="metric-track">
+                <div class="metric-progress" id="textureProgress"></div>
               </div>
-
             </div>
 
           </div>
 
 
+          <!-- Result explanation -->
+          <div class="result-message">
+            <div class="result-message-icon">
+              🥔
+            </div>
+
+            <div class="result-message-text" id="resultMessage">
+              —
+            </div>
+          </div>
+
+
+          <!-- Actions -->
           <div class="result-actions">
 
-            <button type="button" class="secondary-button" id="shareButton" data-i18n="share">
-              Share
+            <button type="button" class="primary-button" id="shareButton">
+              <span class="button-icon">↗</span>
+              <span data-i18n="share">
+                Share
+              </span>
             </button>
 
-            <button type="button" class="secondary-button" id="downloadButton" data-i18n="download">
-              Download
+            <button type="button" class="secondary-button" id="downloadButton">
+              <span class="button-icon">↓</span>
+              <span data-i18n="download">
+                Download
+              </span>
             </button>
 
-            <button type="button" class="primary-button" id="againButton" data-i18n="scanAnother">
-              Scan another
+            <button type="button" class="secondary-button" id="againButton">
+              <span class="button-icon">↻</span>
+              <span data-i18n="again">
+                Again
+              </span>
             </button>
 
           </div>
 
         </div>
-
       </section>
 
 
-      <!-- INFO -->
-
+      <!-- How it works -->
       <section class="info-section">
 
-        <div class="info-item">
-
-          <div class="info-icon">
-            ⚡
+        <div class="section-heading">
+          <div class="section-kicker" data-i18n="howKicker">
+            SCIENCE. SORT OF.
           </div>
 
-          <div>
-            <strong data-i18n="infoLocalTitle">
-              Runs locally
-            </strong>
+          <h2 data-i18n="howTitle">
+            How does it work?
+          </h2>
 
-            <span data-i18n="infoLocalText">
-              Your photo is analyzed directly in your browser.
-            </span>
-          </div>
-
+          <p data-i18n="howDescription">
+            Potato Meter looks at a few visual clues to estimate
+            how potato-like your photo is.
+          </p>
         </div>
 
 
-        <div class="info-item">
+        <div class="info-grid">
 
-          <div class="info-icon">
-            🧪
-          </div>
+          <article class="info-card">
+            <div class="info-card-icon">
+              📐
+            </div>
 
-          <div>
-            <strong data-i18n="infoScienceTitle">
-              Serious science
-            </strong>
+            <h3 data-i18n="shape">
+              Shape
+            </h3>
 
-            <span data-i18n="infoScienceText">
-              Shape, color and texture are carefully examined.
-            </span>
-          </div>
-
-        </div>
+            <p data-i18n="shapeDescription">
+              We look at the object's proportions, size and
+              overall silhouette.
+            </p>
+          </article>
 
 
-        <div class="info-item">
+          <article class="info-card">
+            <div class="info-card-icon">
+              🎨
+            </div>
 
-          <div class="info-icon">
-            🥔
-          </div>
+            <h3 data-i18n="color">
+              Color
+            </h3>
 
-          <div>
-            <strong data-i18n="infoPotatoTitle">
-              Potato expertise
-            </strong>
+            <p data-i18n="colorDescription">
+              Potato-ish beige, yellow, brown and earthy tones
+              get extra attention.
+            </p>
+          </article>
 
-            <span data-i18n="infoPotatoText">
-              Decades of completely imaginary potato research.
-            </span>
-          </div>
+
+          <article class="info-card">
+            <div class="info-card-icon">
+              🧱
+            </div>
+
+            <h3 data-i18n="texture">
+              Texture
+            </h3>
+
+            <p data-i18n="textureDescription">
+              Small changes in brightness help estimate surface
+              detail and roughness.
+            </p>
+          </article>
 
         </div>
 
@@ -416,24 +370,51 @@
     </main>
 
 
+    <!-- Footer -->
     <footer class="site-footer">
 
-      <span data-i18n="footerText">
-        Potatomeeter
-      </span>
+      <div class="footer-main">
+        <span data-i18n="footerText">
+          Made for serious potato science.
+        </span>
 
-      <span>•</span>
+        <span class="footer-potato">
+          🥔
+        </span>
+      </div>
 
-      <span data-i18n="footerSubtext">
-        scientifically questionable, emotionally accurate
-      </span>
+
+      <!-- Credits -->
+      <div class="creator-credit">
+
+        <div class="creator-credit-title">
+          <span>Powered by</span>
+
+          <a href="https://www.linkedin.com/in/vlad-rylov-44a1b8230/" target="_blank" rel="noopener noreferrer">
+            Him
+          </a>
+
+          <span>&amp;</span>
+
+          <a href="https://www.instagram.com/pandicorn_lera" target="_blank" rel="noopener noreferrer">
+            Her
+          </a>
+
+          <span>🥔</span>
+        </div>
+
+        <div class="creator-credit-subtitle">
+          <span>He built it. She made it potato.</span>
+        </div>
+
+      </div>
 
     </footer>
 
   </div>
 
-  <script src="/app.js"></script>
 
+  <script src="/app.js"></script>
 </body>
 
 </html>

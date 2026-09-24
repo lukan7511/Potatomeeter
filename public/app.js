@@ -1,6 +1,7 @@
 /* ================================================================
-   Potatomeeter 4.0
+   POTATO METER 4.0
    LOCAL IMAGE ANALYSIS + RU / EN
+   Aligned with current index.html
    ================================================================ */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -14,61 +15,55 @@ document.addEventListener("DOMContentLoaded", () => {
 
 const translations = {
     ru: {
-        brandTagline: "лаборатория обнаружения картошки",
-        systemOnline: "СИСТЕМА ONLINE",
+        subtitle: "Какой процент картошки?",
 
-        heroEyebrow: "ДВИЖОК АНАЛИЗА КАРТОШКИ",
-        heroTitleLine1: "Насколько",
-        heroTitleLine2: "картошка на фото?",
-        heroDescription:
-            "Загрузите фотографию, и наша высоконаучная система определения картошки выяснит, насколько она похожа на картофель.",
+        badge: "ТЕХНОЛОГИЯ ОПРЕДЕЛЕНИЯ КАРТОШКИ",
+        title: "Насколько картошка на фото?",
+        description:
+            "Загрузите фотографию, и Potato Meter определит, насколько она похожа на картошку.",
 
-        uploadTitle: "Перетащите фото сюда",
-        uploadDescription: "Или выберите изображение на устройстве.",
+        uploadTitle: "Загрузите фотографию",
+        uploadDescription:
+            "Подойдёт любое фото. Картошка это или нет — сейчас выясним.",
         choosePhoto: "Выбрать фотографию",
-        uploadHint: "JPG · PNG · WEBP · до 15 МБ",
+        dragDrop: "или перетащите её сюда",
+        fileHint: "JPG · PNG · WEBP · до 15 МБ",
 
-        previewKicker: "ФОТО ГОТОВО",
         previewTitle: "Ваша фотография",
         remove: "Удалить",
 
-        fileLabel: "ФАЙЛ",
-        sizeLabel: "РАЗМЕР",
+        scan: "Сканировать",
 
-        scanButton: "Сканировать фотографию",
+        scanning: "Проверяем картофельный потенциал…",
+        scanningDescription:
+            "Измеряем форму, цвет и текстуру.",
 
-        loadingTitle: "Проверяем картофельный потенциал…",
-        loadingText: "Измеряем форму, цвет и текстуру.",
-
-        resultKicker: "АНАЛИЗ ЗАВЕРШЁН",
-        resultTitle: "Картофельный вердикт",
-        resultBadge: "ЛОКАЛЬНЫЙ АНАЛИЗ",
-
-        scoreLabel: "КАРТОФЕЛЬНЫЙ БАЛЛ",
+        resultLabel: "РЕЗУЛЬТАТ POTATO METER",
+        resultTitle: "Ваш картофельный балл",
 
         shape: "Форма",
         color: "Цвет",
         texture: "Текстура",
 
+        shapeDescription:
+            "Смотрим на пропорции объекта, его размер и общий силуэт.",
+
+        colorDescription:
+            "Картофельные бежевые, жёлтые, коричневые и землистые оттенки получают дополнительные очки.",
+
+        textureDescription:
+            "Небольшие изменения яркости помогают оценить детализацию и шероховатость поверхности.",
+
         share: "Поделиться",
         download: "Скачать",
-        scanAnother: "Сканировать ещё",
+        again: "Сканировать ещё",
 
-        infoLocalTitle: "Работает локально",
-        infoLocalText:
-            "Фотография анализируется прямо в вашем браузере.",
+        howKicker: "НАУКА. ПРИМЕРНО.",
+        howTitle: "Как это работает?",
+        howDescription:
+            "Potato Meter смотрит на несколько визуальных признаков и оценивает, насколько фотография похожа на картошку.",
 
-        infoScienceTitle: "Серьёзная наука",
-        infoScienceText:
-            "Форма, цвет и текстура проходят тщательное исследование.",
-
-        infoPotatoTitle: "Картофельная экспертиза",
-        infoPotatoText:
-            "Десятилетия совершенно вымышленного исследования картошки.",
-
-        footerText: "Potatomeeter",
-        footerSubtext:
-            "научная сомнительность, эмоциональная точность",
+        footerText: "Сделано для серьёзной науки о картошке.",
 
         verdictVeryPotato:
             "Это практически эталонная картошка.",
@@ -77,7 +72,7 @@ const translations = {
         verdictLikelyPotato:
             "Картофельные признаки явно присутствуют.",
         verdictMaybePotato:
-            "Картошка? Есть основания полагать.",
+            "Картошка? Есть основания так считать.",
         verdictWeakPotato:
             "Картофельный потенциал обнаружен.",
         verdictNotPotato:
@@ -91,9 +86,9 @@ const translations = {
             "Не удалось открыть это изображение.",
 
         shareTitle:
-            "Мой Potatomeeter результат",
+            "Мой результат Potato Meter",
         shareText:
-            "Моя фотография получила {score}% картофельности 🥔",
+            "Моя фотография получила {score}/100 картофельности 🥔",
 
         loadingStep1:
             "Изучаем силуэт объекта…",
@@ -102,65 +97,62 @@ const translations = {
         loadingStep3:
             "Проверяем текстуру…",
         loadingStep4:
-            "Формируем окончательный вердикт…"
+            "Формируем окончательный вердикт…",
+
+        copied:
+            "Скопировано!"
     },
 
     en: {
-        brandTagline: "potato detection laboratory",
-        systemOnline: "SYSTEM ONLINE",
+        subtitle: "How potato is it?",
 
-        heroEyebrow: "POTATO ANALYSIS ENGINE",
-        heroTitleLine1: "How potato",
-        heroTitleLine2: "is your photo?",
-        heroDescription:
-            "Upload a photo and let our highly scientific potato detection system determine just how potato-like it is.",
+        badge: "POTATO DETECTION TECHNOLOGY",
+        title: "How potato is your photo?",
+        description:
+            "Upload a photo and let Potato Meter determine just how potato-like it is.",
 
-        uploadTitle: "Drop your photo here",
-        uploadDescription: "Or choose an image from your device.",
+        uploadTitle: "Upload a photo",
+        uploadDescription:
+            "Any photo will do. Potato or not — let's find out.",
         choosePhoto: "Choose a photo",
-        uploadHint: "JPG · PNG · WEBP · up to 15 MB",
+        dragDrop: "or drag & drop it here",
+        fileHint: "JPG · PNG · WEBP · up to 15 MB",
 
-        previewKicker: "PHOTO READY",
         previewTitle: "Your photo",
         remove: "Remove",
 
-        fileLabel: "FILE",
-        sizeLabel: "SIZE",
+        scan: "Scan",
 
-        scanButton: "Scan this photo",
+        scanning: "Inspecting potato potential…",
+        scanningDescription:
+            "Measuring shape, color and texture.",
 
-        loadingTitle: "Inspecting potato potential…",
-        loadingText: "Measuring shape, color and texture.",
-
-        resultKicker: "ANALYSIS COMPLETE",
-        resultTitle: "Potato verdict",
-        resultBadge: "LOCAL ANALYSIS",
-
-        scoreLabel: "POTATO SCORE",
+        resultLabel: "POTATO METER RESULT",
+        resultTitle: "Your potato score",
 
         shape: "Shape",
         color: "Color",
         texture: "Texture",
 
+        shapeDescription:
+            "We look at the object's proportions, size and overall silhouette.",
+
+        colorDescription:
+            "Potato-ish beige, yellow, brown and earthy tones get extra attention.",
+
+        textureDescription:
+            "Small changes in brightness help estimate surface detail and roughness.",
+
         share: "Share",
         download: "Download",
-        scanAnother: "Scan another",
+        again: "Scan another",
 
-        infoLocalTitle: "Runs locally",
-        infoLocalText:
-            "Your photo is analyzed directly in your browser.",
+        howKicker: "SCIENCE. SORT OF.",
+        howTitle: "How does it work?",
+        howDescription:
+            "Potato Meter looks at a few visual clues to estimate how potato-like your photo is.",
 
-        infoScienceTitle: "Serious science",
-        infoScienceText:
-            "Shape, color and texture are carefully examined.",
-
-        infoPotatoTitle: "Potato expertise",
-        infoPotatoText:
-            "Decades of completely imaginary potato research.",
-
-        footerText: "Potatomeeter",
-        footerSubtext:
-            "scientifically questionable, emotionally accurate",
+        footerText: "Made for serious potato science.",
 
         verdictVeryPotato:
             "This is practically a textbook potato.",
@@ -183,9 +175,9 @@ const translations = {
             "Could not open this image.",
 
         shareTitle:
-            "My Potatomeeter result",
+            "My Potato Meter result",
         shareText:
-            "My photo scored {score}% potato 🥔",
+            "My photo scored {score}/100 potato 🥔",
 
         loadingStep1:
             "Inspecting the object silhouette…",
@@ -194,7 +186,10 @@ const translations = {
         loadingStep3:
             "Checking texture…",
         loadingStep4:
-            "Preparing the final verdict…"
+            "Preparing the final verdict…",
+
+        copied:
+            "Copied!"
     }
 };
 
@@ -217,35 +212,35 @@ let currentShareFile = null;
    ================================================================ */
 
 let fileInput;
-let browseButton;
-let dropzone;
+let uploadButton;
 
-let previewSection;
+let previewWrapper;
 let previewImage;
-
-let fileName;
-let fileSize;
 
 let removeButton;
 let scanButton;
 
-let loadingSection;
-let loadingText;
-let loadingProgressBar;
+let loadingState;
+let loadingTitle;
+let loadingDescription;
+let loadingProgress;
+let loadingPercent;
 
 let resultSection;
 let resultPhoto;
 
 let scoreValue;
-let verdict;
+let scoreVerdict;
 
-let shapeScore;
-let colorScore;
-let textureScore;
+let shapeValue;
+let colorValue;
+let textureValue;
 
-let shapeBar;
-let colorBar;
-let textureBar;
+let shapeProgress;
+let colorProgress;
+let textureProgress;
+
+let resultMessage;
 
 let shareButton;
 let downloadButton;
@@ -257,44 +252,82 @@ let againButton;
    ================================================================ */
 
 function initApp() {
-    fileInput = document.getElementById("fileInput");
-    browseButton = document.getElementById("browseButton");
-    dropzone = document.getElementById("dropzone");
+    fileInput =
+        document.getElementById("fileInput");
 
-    previewSection = document.getElementById("previewSection");
-    previewImage = document.getElementById("previewImage");
+    uploadButton =
+        document.getElementById("uploadButton");
 
-    fileName = document.getElementById("fileName");
-    fileSize = document.getElementById("fileSize");
+    previewWrapper =
+        document.getElementById("previewWrapper");
 
-    removeButton = document.getElementById("removeButton");
-    scanButton = document.getElementById("scanButton");
+    previewImage =
+        document.getElementById("previewImage");
 
-    loadingSection = document.getElementById("loadingSection");
-    loadingText = document.getElementById("loadingText");
-    loadingProgressBar =
-        document.getElementById("loadingProgressBar");
+    removeButton =
+        document.getElementById("removeButton");
 
-    resultSection = document.getElementById("resultSection");
-    resultPhoto = document.getElementById("resultPhoto");
+    scanButton =
+        document.getElementById("scanButton");
 
-    scoreValue = document.getElementById("scoreValue");
-    verdict = document.getElementById("verdict");
+    loadingState =
+        document.getElementById("loadingState");
 
-    shapeScore = document.getElementById("shapeScore");
-    colorScore = document.getElementById("colorScore");
-    textureScore = document.getElementById("textureScore");
+    loadingTitle =
+        loadingState?.querySelector("h3") || null;
 
-    shapeBar = document.getElementById("shapeBar");
-    colorBar = document.getElementById("colorBar");
-    textureBar = document.getElementById("textureBar");
+    loadingDescription =
+        loadingState?.querySelector("p") || null;
 
-    shareButton = document.getElementById("shareButton");
-    downloadButton = document.getElementById("downloadButton");
-    againButton = document.getElementById("againButton");
+    loadingProgress =
+        document.getElementById("loadingProgress");
+
+    loadingPercent =
+        document.getElementById("loadingPercent");
+
+    resultSection =
+        document.getElementById("resultSection");
+
+    resultPhoto =
+        document.getElementById("resultPhoto");
+
+    scoreValue =
+        document.getElementById("scoreValue");
+
+    scoreVerdict =
+        document.getElementById("scoreVerdict");
+
+    shapeValue =
+        document.getElementById("shapeValue");
+
+    colorValue =
+        document.getElementById("colorValue");
+
+    textureValue =
+        document.getElementById("textureValue");
+
+    shapeProgress =
+        document.getElementById("shapeProgress");
+
+    colorProgress =
+        document.getElementById("colorProgress");
+
+    textureProgress =
+        document.getElementById("textureProgress");
+
+    resultMessage =
+        document.getElementById("resultMessage");
+
+    shareButton =
+        document.getElementById("shareButton");
+
+    downloadButton =
+        document.getElementById("downloadButton");
+
+    againButton =
+        document.getElementById("againButton");
 
     setupLanguage();
-
     setupFileInput();
     setupDragAndDrop();
     setupButtons();
@@ -312,7 +345,9 @@ function setupLanguage() {
 
     try {
         savedLanguage =
-            localStorage.getItem("potatoMeterLanguage");
+            localStorage.getItem(
+                "potatoMeterLanguage"
+            );
     } catch {
         savedLanguage = null;
     }
@@ -321,7 +356,8 @@ function setupLanguage() {
         savedLanguage === "ru" ||
         savedLanguage === "en"
     ) {
-        currentLanguage = savedLanguage;
+        currentLanguage =
+            savedLanguage;
     } else {
         const browserLanguage =
             navigator.language?.toLowerCase() || "";
@@ -335,19 +371,22 @@ function setupLanguage() {
     document
         .querySelectorAll(".language-button")
         .forEach((button) => {
-            button.addEventListener("click", () => {
-                const language =
-                    button.dataset.language;
+            button.addEventListener(
+                "click",
+                () => {
+                    const language =
+                        button.dataset.language;
 
-                if (
-                    language !== "ru" &&
-                    language !== "en"
-                ) {
-                    return;
+                    if (
+                        language !== "ru" &&
+                        language !== "en"
+                    ) {
+                        return;
+                    }
+
+                    setLanguage(language);
                 }
-
-                setLanguage(language);
-            });
+            );
         });
 
     setLanguage(currentLanguage);
@@ -357,7 +396,8 @@ function setupLanguage() {
 function setLanguage(language) {
     currentLanguage = language;
 
-    document.documentElement.lang = language;
+    document.documentElement.lang =
+        language;
 
     const dictionary =
         translations[language];
@@ -384,7 +424,8 @@ function setLanguage(language) {
         .forEach((button) => {
             button.classList.toggle(
                 "active",
-                button.dataset.language === language
+                button.dataset.language ===
+                language
             );
         });
 
@@ -398,18 +439,49 @@ function setLanguage(language) {
     }
 
     if (currentAnalysis) {
-        verdict.textContent =
-            getVerdict(currentAnalysis.score);
+        if (scoreVerdict) {
+            scoreVerdict.textContent =
+                getVerdict(
+                    currentAnalysis.score
+                );
+        }
 
-        /*
-           Пересоздаём карточку Share на новом языке.
-           Это гарантирует, что после переключения RU/EN
-           отправится актуальная версия карточки.
-        */
-        currentShareFile =
-            createShareCardFile(
-                currentAnalysis
+        if (resultMessage) {
+            resultMessage.textContent =
+                getResultMessage(
+                    currentAnalysis.score
+                );
+        }
+
+        try {
+            currentShareFile =
+                createShareCardFile(
+                    currentAnalysis,
+                    previewImage
+                );
+        } catch (error) {
+            console.error(
+                "Share card regeneration failed:",
+                error
             );
+
+            currentShareFile = null;
+        }
+    }
+
+    if (
+        loadingState &&
+        !loadingState.hidden
+    ) {
+        if (loadingTitle) {
+            loadingTitle.textContent =
+                t("scanning");
+        }
+
+        if (loadingDescription) {
+            loadingDescription.textContent =
+                t("scanningDescription");
+        }
     }
 }
 
@@ -417,7 +489,7 @@ function setLanguage(language) {
 function t(key) {
     const dictionary =
         translations[currentLanguage] ||
-        translations.ru;
+        translations.en;
 
     return dictionary[key] || key;
 }
@@ -432,16 +504,19 @@ function setupFileInput() {
         return;
     }
 
-    fileInput.addEventListener("change", (event) => {
-        const file =
-            event.target.files?.[0];
+    fileInput.addEventListener(
+        "change",
+        (event) => {
+            const file =
+                event.target.files?.[0];
 
-        if (!file) {
-            return;
+            if (!file) {
+                return;
+            }
+
+            handleFile(file);
         }
-
-        handleFile(file);
-    });
+    );
 }
 
 
@@ -450,7 +525,7 @@ function setupFileInput() {
    ================================================================ */
 
 function setupDragAndDrop() {
-    if (!dropzone) {
+    if (!uploadButton) {
         return;
     }
 
@@ -458,13 +533,15 @@ function setupDragAndDrop() {
         "dragenter",
         "dragover"
     ].forEach((eventName) => {
-        dropzone.addEventListener(
+        uploadButton.addEventListener(
             eventName,
             (event) => {
                 event.preventDefault();
                 event.stopPropagation();
 
-                dropzone.classList.add("dragging");
+                uploadButton.classList.add(
+                    "dragging"
+                );
             }
         );
     });
@@ -473,26 +550,26 @@ function setupDragAndDrop() {
         "dragleave",
         "dragend"
     ].forEach((eventName) => {
-        dropzone.addEventListener(
+        uploadButton.addEventListener(
             eventName,
             (event) => {
                 event.preventDefault();
                 event.stopPropagation();
 
-                dropzone.classList.remove(
+                uploadButton.classList.remove(
                     "dragging"
                 );
             }
         );
     });
 
-    dropzone.addEventListener(
+    uploadButton.addEventListener(
         "drop",
         (event) => {
             event.preventDefault();
             event.stopPropagation();
 
-            dropzone.classList.remove(
+            uploadButton.classList.remove(
                 "dragging"
             );
 
@@ -556,7 +633,7 @@ function setupButtons() {
    ================================================================ */
 
 function handleFile(file) {
-    if (!file.type.startsWith("image/")) {
+    if (!file?.type?.startsWith("image/")) {
         alert(t("invalidFile"));
 
         if (fileInput) {
@@ -566,8 +643,7 @@ function handleFile(file) {
         return;
     }
 
-    const maxSize =
-        15 * 1024 * 1024;
+    const maxSize = 15 * 1024 * 1024;
 
     if (file.size > maxSize) {
         alert(t("tooLarge"));
@@ -579,13 +655,7 @@ function handleFile(file) {
         return;
     }
 
-    if (currentObjectUrl) {
-        URL.revokeObjectURL(
-            currentObjectUrl
-        );
-
-        currentObjectUrl = null;
-    }
+    revokeCurrentObjectUrl();
 
     currentFile = file;
     currentAnalysis = null;
@@ -594,50 +664,48 @@ function handleFile(file) {
     currentObjectUrl =
         URL.createObjectURL(file);
 
-    previewSection.classList.remove(
-        "hidden"
-    );
+    setHidden(previewWrapper, false);
+    setHidden(loadingState, true);
+    setHidden(resultSection, true);
 
-    loadingSection.classList.add(
-        "hidden"
-    );
+    if (scanButton) {
+        scanButton.disabled = true;
+    }
 
-    resultSection.classList.add(
-        "hidden"
-    );
+    if (previewImage) {
+        /*
+         * resetApp() скрывает изображение inline-стилем,
+         * поэтому здесь обязательно возвращаем display.
+         */
+        previewImage.style.display = "block";
 
-    scanButton.disabled = false;
+        previewImage.onload = () => {
+            if (scanButton) {
+                scanButton.disabled = false;
+            }
 
-    fileName.textContent =
-        file.name;
-
-    fileSize.textContent =
-        formatFileSize(file.size);
-
-    previewImage.style.display =
-        "block";
-
-    previewImage.onload = () => {
-        previewSection.classList.remove(
-            "hidden"
-        );
-
-        requestAnimationFrame(() => {
-            previewSection.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
+            requestAnimationFrame(() => {
+                previewWrapper?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
             });
+        };
+
+        previewImage.onerror = () => {
+            alert(t("imageError"));
+            resetApp(true);
+        };
+
+        previewImage.src = currentObjectUrl;
+    }
+
+    requestAnimationFrame(() => {
+        previewWrapper?.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
         });
-    };
-
-    previewImage.onerror = () => {
-        alert(t("imageError"));
-
-        resetApp(true);
-    };
-
-    previewImage.src =
-        currentObjectUrl;
+    });
 }
 
 
@@ -646,54 +714,63 @@ function handleFile(file) {
    ================================================================ */
 
 async function runScan() {
-    if (!currentFile || !currentObjectUrl) {
+    if (
+        !currentFile ||
+        !currentObjectUrl
+    ) {
         return;
     }
 
-    scanButton.disabled = true;
+    if (scanButton) {
+        scanButton.disabled = true;
+    }
 
-    resultSection.classList.add(
-        "hidden"
+    setHidden(
+        resultSection,
+        true
     );
 
-    loadingSection.classList.remove(
-        "hidden"
+    setHidden(
+        loadingState,
+        false
     );
 
-    loadingProgressBar.style.width =
-        "0%";
+    setLoadingProgress(0);
 
-    loadingText.textContent =
-        t("loadingStep1");
+    setLoadingStep(
+        "loadingStep1"
+    );
 
-    loadingSection.scrollIntoView({
-        behavior: "smooth",
-        block: "center"
+    requestAnimationFrame(() => {
+        loadingState?.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+        });
     });
 
     await sleep(180);
 
-    loadingProgressBar.style.width =
-        "25%";
+    setLoadingProgress(25);
 
-    loadingText.textContent =
-        t("loadingStep1");
-
-    await sleep(180);
-
-    loadingProgressBar.style.width =
-        "50%";
-
-    loadingText.textContent =
-        t("loadingStep2");
+    setLoadingStep(
+        "loadingStep1"
+    );
 
     await sleep(180);
 
-    loadingProgressBar.style.width =
-        "70%";
+    setLoadingProgress(50);
 
-    loadingText.textContent =
-        t("loadingStep3");
+    setLoadingStep(
+        "loadingStep2"
+    );
+
+    await sleep(180);
+
+    setLoadingProgress(70);
+
+    setLoadingStep(
+        "loadingStep3"
+    );
 
     await sleep(180);
 
@@ -703,23 +780,22 @@ async function runScan() {
                 currentObjectUrl
             );
 
-        loadingProgressBar.style.width =
-            "90%";
+        setLoadingProgress(90);
 
-        loadingText.textContent =
-            t("loadingStep4");
+        setLoadingStep(
+            "loadingStep4"
+        );
 
         await sleep(180);
 
-        loadingProgressBar.style.width =
-            "100%";
+        setLoadingProgress(100);
 
         renderResult(
             currentAnalysis
         );
     } catch (error) {
         console.error(
-            "Potatomeeter analysis error:",
+            "Potato Meter analysis error:",
             error
         );
 
@@ -727,11 +803,64 @@ async function runScan() {
             t("imageError")
         );
 
-        loadingSection.classList.add(
-            "hidden"
+        setHidden(
+            loadingState,
+            true
         );
 
-        scanButton.disabled = false;
+        if (scanButton) {
+            scanButton.disabled = false;
+        }
+    }
+}
+
+
+function setLoadingStep(key) {
+    const text =
+        t(key);
+
+    if (
+        key === "loadingStep1" ||
+        key === "loadingStep2" ||
+        key === "loadingStep3" ||
+        key === "loadingStep4"
+    ) {
+        if (loadingTitle) {
+            loadingTitle.textContent =
+                text;
+        }
+
+        if (loadingDescription) {
+            loadingDescription.textContent =
+                t("scanningDescription");
+        }
+
+        return;
+    }
+
+    if (loadingTitle) {
+        loadingTitle.textContent =
+            text;
+    }
+}
+
+
+function setLoadingProgress(percent) {
+    const safePercent =
+        clamp(
+            percent,
+            0,
+            100
+        );
+
+    if (loadingProgress) {
+        loadingProgress.style.width =
+            `${safePercent}%`;
+    }
+
+    if (loadingPercent) {
+        loadingPercent.textContent =
+            `${Math.round(safePercent)}%`;
     }
 }
 
@@ -760,7 +889,8 @@ async function analyzeImage(src) {
         Math.max(
             1,
             Math.round(
-                image.naturalWidth * scale
+                image.naturalWidth *
+                scale
             )
         );
 
@@ -768,7 +898,8 @@ async function analyzeImage(src) {
         Math.max(
             1,
             Math.round(
-                image.naturalHeight * scale
+                image.naturalHeight *
+                scale
             )
         );
 
@@ -787,6 +918,12 @@ async function analyzeImage(src) {
                 willReadFrequently: true
             }
         );
+
+    if (!context) {
+        throw new Error(
+            "Canvas context unavailable."
+        );
+    }
 
     context.drawImage(
         image,
@@ -851,19 +988,36 @@ async function analyzeImage(src) {
         );
 
     return {
-        score: clamp(
-            score,
-            0,
-            100
+        score: Math.round(
+            clamp(
+                score,
+                0,
+                100
+            )
         ),
+
         shape: Math.round(
-            clamp(shape, 0, 100)
+            clamp(
+                shape,
+                0,
+                100
+            )
         ),
+
         color: Math.round(
-            clamp(color, 0, 100)
+            clamp(
+                color,
+                0,
+                100
+            )
         ),
+
         texture: Math.round(
-            clamp(texture, 0, 100)
+            clamp(
+                texture,
+                0,
+                100
+            )
         )
     };
 }
@@ -890,7 +1044,10 @@ function buildObjectMask(
         Math.max(
             1,
             Math.floor(
-                Math.min(width, height) / 100
+                Math.min(
+                    width,
+                    height
+                ) / 100
             )
         );
 
@@ -947,8 +1104,7 @@ function buildObjectMask(
             borderPixels
         );
 
-    let threshold =
-        42;
+    let threshold = 42;
 
     const maxIterations = 2;
 
@@ -992,6 +1148,8 @@ function buildObjectMask(
                 ) {
                     mask[index] = 1;
                     foregroundCount++;
+                } else {
+                    mask[index] = 0;
                 }
             }
         }
@@ -1003,7 +1161,10 @@ function buildObjectMask(
         if (ratio > 0.92) {
             threshold += 18;
         } else if (ratio < 0.06) {
-            threshold -= 8;
+            threshold = Math.max(
+                8,
+                threshold - 8
+            );
         } else {
             break;
         }
@@ -1161,7 +1322,8 @@ function getMaskBounds(
             maxY: height - 1,
             width,
             height,
-            count: width * height
+            count:
+                width * height
         };
     }
 
@@ -1170,10 +1332,13 @@ function getMaskBounds(
         minY,
         maxX,
         maxY,
+
         width:
             maxX - minX + 1,
+
         height:
             maxY - minY + 1,
+
         count
     };
 }
@@ -1219,7 +1384,8 @@ function calculateShapeScore(
         clamp(
             100 -
             Math.abs(
-                fillRatio - 0.64
+                fillRatio -
+                0.64
             ) *
             130,
             0,
@@ -1246,7 +1412,7 @@ function calculateShapeScore(
     return (
         aspectScore * 0.45 +
         fillScore * 0.35 +
-        sizeScore * 0.20
+        sizeScore * 0.2
     );
 }
 
@@ -1260,7 +1426,6 @@ function calculateColorScore(
     mask
 ) {
     let objectPixels = 0;
-
     let potatoPixels = 0;
 
     for (
@@ -1279,15 +1444,24 @@ function calculateColorScore(
         objectPixels++;
 
         const max =
-            Math.max(r, g, b);
+            Math.max(
+                r,
+                g,
+                b
+            );
 
         const min =
-            Math.min(r, g, b);
+            Math.min(
+                r,
+                g,
+                b
+            );
 
         const saturation =
             max === 0
                 ? 0
-                : (max - min) / max;
+                : (max - min) /
+                max;
 
         const warm =
             r > g &&
@@ -1467,56 +1641,88 @@ function calculateTextureScore(
 function renderResult(
     analysis
 ) {
-    resultPhoto.src =
-        currentObjectUrl;
+    if (resultPhoto) {
+        resultPhoto.src =
+            currentObjectUrl;
 
-    resultPhoto.style.display =
-        "block";
+        resultPhoto.style.display =
+            "block";
+    }
 
-    scoreValue.textContent =
-        `${analysis.score}%`;
+    if (scoreValue) {
+        scoreValue.textContent =
+            `${analysis.score}`;
+    }
 
-    shapeScore.textContent =
-        `${analysis.shape}%`;
+    if (shapeValue) {
+        shapeValue.textContent =
+            `${analysis.shape}%`;
+    }
 
-    colorScore.textContent =
-        `${analysis.color}%`;
+    if (colorValue) {
+        colorValue.textContent =
+            `${analysis.color}%`;
+    }
 
-    textureScore.textContent =
-        `${analysis.texture}%`;
+    if (textureValue) {
+        textureValue.textContent =
+            `${analysis.texture}%`;
+    }
 
-    shapeBar.style.width =
-        `${analysis.shape}%`;
+    if (shapeProgress) {
+        shapeProgress.style.width =
+            `${analysis.shape}%`;
+    }
 
-    colorBar.style.width =
-        `${analysis.color}%`;
+    if (colorProgress) {
+        colorProgress.style.width =
+            `${analysis.color}%`;
+    }
 
-    textureBar.style.width =
-        `${analysis.texture}%`;
+    if (textureProgress) {
+        textureProgress.style.width =
+            `${analysis.texture}%`;
+    }
 
-    verdict.textContent =
-        getVerdict(
-            analysis.score
-        );
+    if (scoreVerdict) {
+        scoreVerdict.textContent =
+            getVerdict(
+                analysis.score
+            );
+    }
 
-    loadingSection.classList.add(
-        "hidden"
+    if (resultMessage) {
+        resultMessage.textContent =
+            getResultMessage(
+                analysis.score
+            );
+    }
+
+    setHidden(
+        loadingState,
+        true
     );
 
-    resultSection.classList.remove(
-        "hidden"
+    setHidden(
+        resultSection,
+        false
     );
 
-    scanButton.disabled = false;
+    if (scanButton) {
+        scanButton.disabled = false;
+    }
 
     /*
-       Создаём PNG-карточку сразу после результата.
-       Поэтому к моменту нажатия Share файл уже готов.
+       The preview image is already loaded by this point,
+       so it is a safer source for generating the share PNG
+       than waiting for resultPhoto to finish loading.
     */
+
     try {
         currentShareFile =
             createShareCardFile(
-                analysis
+                analysis,
+                previewImage
             );
     } catch (error) {
         console.error(
@@ -1528,7 +1734,7 @@ function renderResult(
     }
 
     requestAnimationFrame(() => {
-        resultSection.scrollIntoView({
+        resultSection?.scrollIntoView({
             behavior: "smooth",
             block: "start"
         });
@@ -1577,82 +1783,204 @@ function getVerdict(score) {
 }
 
 
+function getResultMessage(score) {
+    if (score >= 90) {
+        return currentLanguage === "ru"
+            ? "Картофельность практически вне конкуренции."
+            : "Potato levels are dangerously impressive.";
+    }
+
+    if (score >= 75) {
+        return currentLanguage === "ru"
+            ? "Форма, цвет и текстура подозрительно картофельные."
+            : "Shape, color and texture are suspiciously potato-like.";
+    }
+
+    if (score >= 60) {
+        return currentLanguage === "ru"
+            ? "Картофельные признаки довольно убедительны."
+            : "The potato characteristics are fairly convincing.";
+    }
+
+    if (score >= 45) {
+        return currentLanguage === "ru"
+            ? "Картошка заметна, но экспертиза продолжается."
+            : "There is some potato energy here, but the evidence is mixed.";
+    }
+
+    if (score >= 25) {
+        return currentLanguage === "ru"
+            ? "Картофельный потенциал замечен, но не подтверждён."
+            : "Some potato potential is visible, but not enough for a conviction.";
+    }
+
+    return currentLanguage === "ru"
+        ? "На данный момент это скорее не картошка."
+        : "At this point, this is probably not a potato.";
+}
+
+
 /* ================================================================
    SHARE
    ================================================================ */
 
 async function shareResult() {
-    if (!currentAnalysis) return;
+    if (!currentAnalysis) {
+        return;
+    }
 
-    const score = currentAnalysis.score;
-    const shareTitle = t("shareTitle");
+    const score =
+        currentAnalysis.score;
 
-    const siteUrl = window.location.origin + window.location.pathname;
+    const shareTitle =
+        t("shareTitle");
 
-    const shareText = currentLanguage === "ru"
-        ? `🥔 Potato Meter: ${score}/100\nПроверь, насколько это картошка!`
-        : `🥔 Potato Meter: ${score}/100\nCheck how potato it is!`;
-
-    // Если карточка ещё не создана — создаём её из уже загруженного preview
-    if (!currentShareFile) {
-        try {
-            currentShareFile = createShareCardFile(
-                currentAnalysis,
-                previewImage
+    const shareText =
+        t("shareText")
+            .replace(
+                "{score}",
+                score
             );
+
+    const siteUrl =
+        window.location.origin +
+        window.location.pathname;
+
+    if (
+        !currentShareFile
+    ) {
+        try {
+            currentShareFile =
+                createShareCardFile(
+                    currentAnalysis,
+                    previewImage
+                );
         } catch (error) {
-            console.error("Share card creation failed:", error);
+            console.error(
+                "Share card generation failed:",
+                error
+            );
+
             currentShareFile = null;
         }
     }
 
-    if (!navigator.share || !navigator.canShare || !currentShareFile) {
-        showShareError();
-        return;
-    }
+    /*
+       Preferred path:
+       share image + text + site URL.
+    */
 
-    let canShareFile = false;
-
-    try {
-        canShareFile = navigator.canShare({
-            files: [currentShareFile]
-        });
-    } catch (error) {
-        console.error("canShare check failed:", error);
-        canShareFile = false;
-    }
-
-    if (!canShareFile) {
-        showShareError();
-        return;
-    }
-
-    try {
-        await navigator.share({
+    if (
+        navigator.share &&
+        navigator.canShare &&
+        currentShareFile
+    ) {
+        const shareData = {
             title: shareTitle,
             text: shareText,
             url: siteUrl,
-            files: [currentShareFile]
-        });
-    } catch (error) {
-        if (error?.name === "AbortError") return;
+            files: [
+                currentShareFile
+            ]
+        };
 
-        console.error("Image sharing failed:", error);
-        showShareError();
+        try {
+            const canShare =
+                navigator.canShare({
+                    files: [
+                        currentShareFile
+                    ]
+                });
+
+            if (canShare) {
+                await navigator.share(
+                    shareData
+                );
+
+                return;
+            }
+        } catch (error) {
+            if (
+                error?.name ===
+                "AbortError"
+            ) {
+                return;
+            }
+
+            console.warn(
+                "Image share failed:",
+                error
+            );
+        }
     }
-}
 
-/* ================================================================
-   SHARE ERROR
-   ================================================================ */
+    /*
+       Secondary Web Share fallback:
+       text + URL, without image.
+    */
 
-function showShareError() {
-    const message =
-        currentLanguage === "ru"
-            ? "Этот браузер не поддерживает отправку изображений через кнопку «Поделиться». Попробуйте открыть Potatomeeter в Chrome или Safari."
-            : "This browser does not support sharing images from the website. Try opening Potatomeeter in Chrome or Safari.";
+    if (navigator.share) {
+        try {
+            await navigator.share({
+                title: shareTitle,
+                text: shareText,
+                url: siteUrl
+            });
 
-    alert(message);
+            return;
+        } catch (error) {
+            if (
+                error?.name ===
+                "AbortError"
+            ) {
+                return;
+            }
+        }
+    }
+
+    /*
+       Clipboard fallback.
+    */
+
+    const clipboardText =
+        `${shareText}\n${siteUrl}`;
+
+    try {
+        await navigator.clipboard.writeText(
+            clipboardText
+        );
+
+        const shareLabel =
+            shareButton?.querySelector(
+                '[data-i18n="share"]'
+            );
+
+        if (shareLabel) {
+            const originalText =
+                t("share");
+
+            shareLabel.textContent =
+                t("copied");
+
+            setTimeout(() => {
+                shareLabel.textContent =
+                    originalText;
+            }, 1600);
+        }
+
+        return;
+    } catch {
+        // Clipboard may be unavailable.
+    }
+
+    /*
+       Final fallback.
+    */
+
+    window.prompt(
+        shareTitle,
+        clipboardText
+    );
 }
 
 
@@ -1660,41 +1988,21 @@ function showShareError() {
    SHARE CARD
    ================================================================ */
 
-/*
-   Создаёт самостоятельную PNG-карточку:
-
-   ┌──────────────────────────────────┐
-   │          Potatomeeter            │
-   │                                  │
-   │          [ ФОТО ]                │
-   │                                  │
-   │          POTATO SCORE             │
-   │             87%                  │
-   │      Very potato-like...         │
-   │                                  │
-   │  Shape     Color     Texture     │
-   │   82%       91%        64%       │
-   └──────────────────────────────────┘
-
-   Карточка не зависит от DOM/CSS сайта.
-   Это настоящий PNG, который можно отправить
-   в Telegram / WhatsApp / Messages и т.д.
-*/
-
 function createShareCardFile(
-    analysis
+    analysis,
+    sourceImage
 ) {
     if (
         !analysis ||
-        !resultPhoto
+        !sourceImage
     ) {
         return null;
     }
 
     if (
-        !resultPhoto.complete ||
-        !resultPhoto.naturalWidth ||
-        !resultPhoto.naturalHeight
+        !sourceImage.complete ||
+        !sourceImage.naturalWidth ||
+        !sourceImage.naturalHeight
     ) {
         return null;
     }
@@ -1734,7 +2042,7 @@ function createShareCardFile(
     );
 
     /*
-       Subtle decorative circles
+       Decorative gradient
     */
 
     const yellowGradient =
@@ -1793,7 +2101,7 @@ function createShareCardFile(
     context.stroke();
 
     /*
-       Header
+       Header icon
     */
 
     context.fillStyle =
@@ -1838,7 +2146,7 @@ function createShareCardFile(
         "900 31px Inter, Arial, sans-serif";
 
     context.fillText(
-        "Potatomeeter",
+        "Potato Meter",
         185,
         122
     );
@@ -1858,7 +2166,7 @@ function createShareCardFile(
     );
 
     /*
-       Photo area
+       Photo
     */
 
     const photoX = 90;
@@ -1936,14 +2244,14 @@ function createShareCardFile(
     }
 
     /*
-       Preserve original image aspect ratio.
+       Preserve image ratio
     */
 
     const imageWidth =
-        resultPhoto.naturalWidth;
+        sourceImage.naturalWidth;
 
     const imageHeight =
-        resultPhoto.naturalHeight;
+        sourceImage.naturalHeight;
 
     const imageRatio =
         imageWidth /
@@ -2000,7 +2308,7 @@ function createShareCardFile(
     }
 
     context.drawImage(
-        resultPhoto,
+        sourceImage,
         drawX,
         drawY,
         drawWidth,
@@ -2041,7 +2349,7 @@ function createShareCardFile(
         "950 145px Inter, Arial, sans-serif";
 
     context.fillText(
-        `${analysis.score}%`,
+        `${analysis.score}/100`,
         width / 2,
         1070
     );
@@ -2056,14 +2364,11 @@ function createShareCardFile(
     context.font =
         "900 27px Inter, Arial, sans-serif";
 
-    const verdictText =
-        getVerdict(
-            analysis.score
-        );
-
     drawWrappedText(
         context,
-        verdictText,
+        getVerdict(
+            analysis.score
+        ),
         width / 2,
         1135,
         900,
@@ -2071,7 +2376,7 @@ function createShareCardFile(
     );
 
     /*
-       Details
+       Metrics
     */
 
     const detailsY = 1240;
@@ -2120,13 +2425,7 @@ function createShareCardFile(
     );
 
     /*
-       Convert canvas to PNG synchronously.
-
-       Это сделано намеренно: File создаётся
-       ещё до нажатия Share, поэтому само
-       navigator.share() вызывается непосредственно
-       из обработчика кнопки без дополнительного
-       ожидания генерации изображения.
+       PNG
     */
 
     const dataUrl =
@@ -2144,9 +2443,7 @@ function createShareCardFile(
     }
 
     return new File(
-        [
-            blob
-        ],
+        [blob],
         `potato-meter-${analysis.score}.png`,
         {
             type: "image/png",
@@ -2158,7 +2455,7 @@ function createShareCardFile(
 
 
 /* ================================================================
-   SHARE CARD DRAWING HELPERS
+   SHARE CARD HELPERS
    ================================================================ */
 
 function drawShareMetric(
@@ -2198,10 +2495,6 @@ function drawShareMetric(
         y
     );
 
-    /*
-       Bar background
-    */
-
     context.fillStyle =
         "#e6e1d7";
 
@@ -2216,10 +2509,6 @@ function drawShareMetric(
 
     context.fill();
 
-    /*
-       Bar value
-    */
-
     context.fillStyle =
         "#667a3d";
 
@@ -2229,8 +2518,10 @@ function drawShareMetric(
         y + 16,
         Math.max(
             2,
-            220 * (
-                value / 100
+            220 *
+            (
+                value /
+                100
             )
         ),
         10,
@@ -2327,15 +2618,14 @@ function drawWrappedText(
 
         if (
             metrics.width >
-                maxWidth &&
+            maxWidth &&
             currentLine
         ) {
             lines.push(
                 currentLine
             );
 
-            currentLine =
-                word;
+            currentLine = word;
         } else {
             currentLine =
                 testLine;
@@ -2357,8 +2647,8 @@ function drawWrappedText(
                 line,
                 centerX,
                 startY +
-                    index *
-                    lineHeight
+                index *
+                lineHeight
             );
         }
     );
@@ -2408,9 +2698,7 @@ function dataUrlToBlob(
         }
 
         return new Blob(
-            [
-                bytes
-            ],
+            [bytes],
             {
                 type: mime
             }
@@ -2482,6 +2770,10 @@ async function downloadResult() {
                 "2d"
             );
 
+        if (!context) {
+            return;
+        }
+
         context.drawImage(
             image,
             0,
@@ -2509,7 +2801,9 @@ async function downloadResult() {
                 link.href = url;
 
                 link.download =
-                    `potato-meter-${currentAnalysis?.score ?? 0}.png`;
+                    `potato-meter-${currentAnalysis?.score ??
+                    0
+                    }.png`;
 
                 document.body.appendChild(
                     link
@@ -2543,13 +2837,7 @@ async function downloadResult() {
 function resetApp(
     focusUpload = false
 ) {
-    if (currentObjectUrl) {
-        URL.revokeObjectURL(
-            currentObjectUrl
-        );
-
-        currentObjectUrl = null;
-    }
+    revokeCurrentObjectUrl();
 
     currentFile = null;
     currentAnalysis = null;
@@ -2567,14 +2855,9 @@ function resetApp(
             "src"
         );
 
-        previewImage.style.display =
-            "none";
     }
 
     if (resultPhoto) {
-        resultPhoto.onload = null;
-        resultPhoto.onerror = null;
-
         resultPhoto.removeAttribute(
             "src"
         );
@@ -2583,92 +2866,141 @@ function resetApp(
             "none";
     }
 
-    previewSection?.classList.add(
-        "hidden"
+    setHidden(
+        previewWrapper,
+        true
     );
 
-    loadingSection?.classList.add(
-        "hidden"
+    setHidden(
+        loadingState,
+        true
     );
 
-    resultSection?.classList.add(
-        "hidden"
+    setHidden(
+        resultSection,
+        true
     );
-
-    if (fileName) {
-        fileName.textContent = "—";
-    }
-
-    if (fileSize) {
-        fileSize.textContent = "—";
-    }
 
     if (scoreValue) {
-        scoreValue.textContent = "0%";
+        scoreValue.textContent =
+            "0";
     }
 
-    if (shapeScore) {
-        shapeScore.textContent = "0%";
+    if (scoreVerdict) {
+        scoreVerdict.textContent =
+            "—";
     }
 
-    if (colorScore) {
-        colorScore.textContent = "0%";
-    }
-
-    if (textureScore) {
-        textureScore.textContent = "0%";
-    }
-
-    if (verdict) {
-        verdict.textContent = "—";
-    }
-
-    if (shapeBar) {
-        shapeBar.style.width = "0%";
-    }
-
-    if (colorBar) {
-        colorBar.style.width = "0%";
-    }
-
-    if (textureBar) {
-        textureBar.style.width = "0%";
-    }
-
-    if (loadingProgressBar) {
-        loadingProgressBar.style.width =
+    if (shapeValue) {
+        shapeValue.textContent =
             "0%";
     }
 
-    if (loadingText) {
-        loadingText.textContent =
-            t("loadingText");
+    if (colorValue) {
+        colorValue.textContent =
+            "0%";
+    }
+
+    if (textureValue) {
+        textureValue.textContent =
+            "0%";
+    }
+
+    if (shapeProgress) {
+        shapeProgress.style.width =
+            "0%";
+    }
+
+    if (colorProgress) {
+        colorProgress.style.width =
+            "0%";
+    }
+
+    if (textureProgress) {
+        textureProgress.style.width =
+            "0%";
+    }
+
+    if (resultMessage) {
+        resultMessage.textContent =
+            "—";
+    }
+
+    setLoadingProgress(0);
+
+    if (loadingTitle) {
+        loadingTitle.textContent =
+            t("scanning");
+    }
+
+    if (loadingDescription) {
+        loadingDescription.textContent =
+            t("scanningDescription");
     }
 
     if (scanButton) {
         scanButton.disabled = false;
     }
 
-    dropzone?.classList.remove(
+    uploadButton?.classList.remove(
         "dragging"
     );
 
     if (focusUpload) {
         requestAnimationFrame(() => {
             document
-                .getElementById(
-                    "uploadSection"
+                .querySelector(
+                    ".upload-section"
                 )
                 ?.scrollIntoView({
                     behavior: "smooth",
-                    block: "center"
+                    block: "start"
                 });
 
             setTimeout(() => {
-                browseButton?.focus();
-            }, 400);
+                /*
+                   The upload element is a label,
+                   so focusing it is optional.
+                */
+
+                uploadButton?.focus();
+            }, 350);
         });
     }
+}
+
+
+/* ================================================================
+   DOM STATE HELPERS
+   ================================================================ */
+
+function setHidden(
+    element,
+    hidden
+) {
+    if (!element) {
+        return;
+    }
+
+    element.hidden =
+        Boolean(hidden);
+}
+
+
+function revokeCurrentObjectUrl() {
+    if (!currentObjectUrl) {
+        return;
+    }
+
+    try {
+        URL.revokeObjectURL(
+            currentObjectUrl
+        );
+    } catch {
+        // Ignore cleanup errors.
+    }
+
+    currentObjectUrl = null;
 }
 
 
@@ -2713,15 +3045,18 @@ function getPixel(
             width - 1
         );
 
+    const imageHeight =
+        Math.floor(
+            data.length /
+            4 /
+            width
+        );
+
     const safeY =
         clamp(
             Math.round(y),
             0,
-            Math.floor(
-                data.length /
-                4 /
-                width
-            ) - 1
+            imageHeight - 1
         );
 
     const index =
@@ -2760,9 +3095,17 @@ function averageRgb(
     }
 
     return {
-        r: r / pixels.length,
-        g: g / pixels.length,
-        b: b / pixels.length
+        r:
+            r /
+            pixels.length,
+
+        g:
+            g /
+            pixels.length,
+
+        b:
+            b /
+            pixels.length
     };
 }
 
@@ -2858,24 +3201,4 @@ function sleep(ms) {
             );
         }
     );
-}
-
-
-function formatFileSize(
-    bytes
-) {
-    if (bytes < 1024) {
-        return `${bytes} B`;
-    }
-
-    if (bytes < 1024 * 1024) {
-        return `${(
-            bytes / 1024
-        ).toFixed(1)} KB`;
-    }
-
-    return `${(
-        bytes /
-        (1024 * 1024)
-    ).toFixed(1)} MB`;
 }
