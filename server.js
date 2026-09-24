@@ -116,7 +116,7 @@ app.use((err, _req, res, _next) => {
 
 app.listen(PORT, () => {
   console.log("");
-  console.log("🥔 Potato Meter 4.0");
+  console.log("🥔 Potatomeeter 4.0");
   console.log("--------------------------------");
   console.log(`🚀 http://localhost:${PORT}`);
   console.log(`❤️  http://localhost:${PORT}/api/health`);
