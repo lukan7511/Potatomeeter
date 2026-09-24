@@ -1590,12 +1590,16 @@ async function shareResult() {
     const siteUrl = window.location.origin + window.location.pathname;
 
     const shareText = currentLanguage === "ru"
-        ? `🥔 Potato Meter: ${score}/100\nПроверь, насколько это картошка!\n\n${siteUrl}`
-        : `🥔 Potato Meter: ${score}/100\nCheck how potato it is!\n\n${siteUrl}`;
+        ? `🥔 Potato Meter: ${score}/100\nПроверь, насколько это картошка!`
+        : `🥔 Potato Meter: ${score}/100\nCheck how potato it is!`;
 
+    // Если карточка ещё не создана — создаём её из уже загруженного preview
     if (!currentShareFile) {
         try {
-            currentShareFile = createShareCardFile(currentAnalysis, previewImage);
+            currentShareFile = createShareCardFile(
+                currentAnalysis,
+                previewImage
+            );
         } catch (error) {
             console.error("Share card creation failed:", error);
             currentShareFile = null;
@@ -1613,7 +1617,8 @@ async function shareResult() {
         canShareFile = navigator.canShare({
             files: [currentShareFile]
         });
-    } catch {
+    } catch (error) {
+        console.error("canShare check failed:", error);
         canShareFile = false;
     }
 
